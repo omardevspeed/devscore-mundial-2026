@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    // football-data.org — fuente de resultados en (casi) tiempo real, con estado IN_PLAY.
+    // Token gratuito: https://www.football-data.org/client/register
+    // Si el token esta vacio, la app usa openfootball como fallback.
+    'football_data' => [
+        'token'       => env('FOOTBALL_DATA_TOKEN'),
+        'competition' => env('FOOTBALL_DATA_COMPETITION', 'WC'),
+    ],
+
 ];

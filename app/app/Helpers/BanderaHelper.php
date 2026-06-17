@@ -70,6 +70,26 @@ class BanderaHelper
         'South Korea'         => '🇰🇷',
         'Turkey'              => '🇹🇷',
         'Wales'               => '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
+        // Selecciones clasificadas / alias football-data.org 2026
+        'Norway'              => '🇳🇴',
+        'Austria'            => '🇦🇹',
+        'Jordan'             => '🇯🇴',
+        'Uzbekistan'         => '🇺🇿',
+        'Cape Verde'         => '🇨🇻',
+        'Cape Verde Islands' => '🇨🇻',
+        'Curaçao'            => '🇨🇼',
+        'Curacao'            => '🇨🇼',
+        'Haiti'              => '🇭🇹',
+        'Scotland'           => '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+        'Czechia'            => '🇨🇿',
+        'Czech Republic'     => '🇨🇿',
+        'DR Congo'           => '🇨🇩',
+        'Congo DR'           => '🇨🇩',
+        'Bosnia & Herzegovina' => '🇧🇦',
+        'Bosnia-Herzegovina' => '🇧🇦',
+        'Sweden'             => '🇸🇪',
+        'Tunisia'            => '🇹🇳',
+        'Côte d\'Ivoire'     => '🇨🇮',
     ];
 
     public static function get(string $equipo): string
