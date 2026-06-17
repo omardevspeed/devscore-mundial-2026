@@ -1,0 +1,86 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mundial_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-devscore}
+      DB_USERNAME: ${DB_USERNAME:-devscore}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mundial
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mundial_scheduler
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-devscore}
+      DB_USERNAME: ${DB_USERNAME:-devscore}
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+    depends_on:
+      app:
+        condition: service_started
+      mysql:
+        condition: service_healthy
+    entrypoint: ["php", "artisan", "schedule:work"]
+    networks:
+      - mundial
+
+  nginx:
+    image: nginx:alpine
+    container_name: mundial_nginx
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - mundial
+
+  mysql:
+    image: mysql:8.0
+    container_name: mundial_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-devscore}
+      MYSQL_USER: ${DB_USERNAME:-devscore}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootsecret}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_ROOT_PASSWORD:-rootsecret}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mundial
+
+networks:
+  mundial:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

@@ -1,0 +1,18 @@
+# Variables de entorno (contienen credenciales)
+/.env
+.env
+
+# Dependencias y artefactos de la app Laravel
+app/vendor/
+app/node_modules/
+app/public/build/
+app/storage/logs/*.log
+
+# Sistema operativo / editores
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/
+
+# Prompt de trabajo (no forma parte de la app)
+promptMaestrio.md
