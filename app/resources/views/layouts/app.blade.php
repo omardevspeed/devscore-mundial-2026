@@ -166,12 +166,15 @@
                         const r = await fetch('{{ route('refresh') }}', { headers: { 'Accept': 'application/json' } });
                         if (!r.ok) return;
                         const data = await r.json();
-                        const previo = this.hayEnVivo;
+                        const cambioEstado = this.hayEnVivo !== data.hay_en_vivo
+                            || this.cantidadEnVivo !== data.cantidad_en_vivo;
                         this.hayEnVivo = data.hay_en_vivo;
                         this.cantidadEnVivo = data.cantidad_en_vivo;
                         this.haceSegundos = 0;
-                        // Si cambió el estado de partidos en vivo, recargar contenido completo.
-                        if (previo !== data.hay_en_vivo) {
+                        // Recargar el contenido completo (secciones renderizadas en servidor)
+                        // si cambió el set de partidos en vivo o para refrescar marcadores
+                        // mientras haya partidos en curso.
+                        if (cambioEstado || data.hay_en_vivo) {
                             window.location.reload();
                         }
                     } catch (e) { /* silencioso */ }
