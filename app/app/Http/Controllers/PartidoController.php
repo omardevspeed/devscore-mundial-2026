@@ -25,7 +25,7 @@ class PartidoController extends Controller
             'stats'              => $datos['stats'],
             'hay_en_vivo'        => $datos['enVivo']->isNotEmpty(),
             'cantidad_en_vivo'   => $datos['enVivo']->count(),
-            'actualizado'        => now()->setTimezone('America/Santiago')->format('H:i:s'),
+            'actualizado'        => now()->setTimezone(config('app.display_timezone'))->format('H:i:s'),
         ]);
     }
 
@@ -40,7 +40,7 @@ class PartidoController extends Controller
             ->whereNotIn('estado', array_merge($this->estadosLive, ['finished']))
             ->orderBy('fecha_partido')
             ->get()
-            ->groupBy(fn ($p) => $p->fecha_partido?->setTimezone('America/Santiago')->format('Y-m-d'));
+            ->groupBy(fn ($p) => $p->fecha_partido?->setTimezone(config('app.display_timezone'))->format('Y-m-d'));
 
         $terminados = Partido::with('prediccion')
             ->where('estado', 'finished')

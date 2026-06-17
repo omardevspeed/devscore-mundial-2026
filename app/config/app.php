@@ -65,7 +65,22 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    // La app SIEMPRE trabaja internamente en UTC (almacenamiento consistente),
+    // sin importar lo que diga el .env. La conversion a hora local se hace solo
+    // en la capa de presentacion usando 'display_timezone'.
+    'timezone' => 'UTC',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Zona horaria de visualizacion
+    |--------------------------------------------------------------------------
+    |
+    | Zona usada para MOSTRAR fechas/horas al usuario (vistas y respuestas).
+    | Por defecto Chile (America/Santiago). Configurable via APP_DISPLAY_TIMEZONE.
+    |
+    */
+
+    'display_timezone' => env('APP_DISPLAY_TIMEZONE', 'America/Santiago'),
 
     /*
     |--------------------------------------------------------------------------

@@ -87,7 +87,7 @@
                             <div class="flex items-center justify-between mb-3">
                                 <span class="text-[#FF6B35] text-sm font-medium uppercase">{{ $partido->grupo ?? $partido->fase }}</span>
                                 <span class="text-gray-400 text-xs">
-                                    {{ $partido->fecha_partido?->setTimezone('America/Santiago')->format('H:i') }} hrs
+                                    {{ $partido->fecha_partido?->setTimezone(config('app.display_timezone'))->format('H:i') }} hrs
                                 </span>
                             </div>
                             <div class="flex items-center justify-between gap-2">
