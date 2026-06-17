@@ -10,4 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('mundial:sync')
     ->everyMinute()
-    ->withoutOverlapping();
+    ->withoutOverlapping(5);
