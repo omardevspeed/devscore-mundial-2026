@@ -51,6 +51,13 @@
       x-data="dashboard()" x-init="init()">
 
     {{-- HEADER --}}
+    @php($navItems = array_filter([
+        ['href' => '#estadisticas', 'label' => 'Estadísticas', 'show' => true],
+        ['href' => '#en-vivo',      'label' => 'En vivo',      'show' => $enVivo->isNotEmpty()],
+        ['href' => '#proximos',     'label' => 'Próximos',     'show' => true],
+        ['href' => '#terminados',   'label' => 'Terminados',   'show' => $terminados->isNotEmpty()],
+        ['href' => '#grupos',       'label' => 'Tabla por grupos', 'show' => !empty($grupos)],
+    ], fn ($i) => $i['show']))
     <header class="bg-negro border-b border-borde sticky top-0 z-50 backdrop-blur">
         <div class="max-w-6xl mx-auto px-4 py-3 md:py-4 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
@@ -68,7 +75,17 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
+            {{-- Navegación desktop --}}
+            <nav class="hidden lg:flex items-center gap-1 text-sm">
+                @foreach($navItems as $item)
+                    <a href="{{ $item['href'] }}"
+                       class="px-3 py-1.5 rounded-lg text-gray-300 font-medium hover:text-white hover:bg-card transition">
+                        {{ $item['label'] }}
+                    </a>
+                @endforeach
+            </nav>
+
+            <div class="flex items-center gap-2 md:gap-3">
                 <span x-show="hayEnVivo"
                       class="animate-pulse bg-speed text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded uppercase tracking-wide"
                       x-cloak>
@@ -77,8 +94,37 @@
                 <span class="hidden sm:inline text-xs text-gray-400">
                     Actualizado hace <span class="text-azul font-medium" x-text="haceSegundos"></span>s
                 </span>
+
+                {{-- Botón hamburguesa (mobile / tablet) --}}
+                <button type="button"
+                        class="lg:hidden inline-flex items-center justify-center h-9 w-9 rounded-lg border border-borde text-white hover:bg-card transition"
+                        :aria-expanded="menuOpen"
+                        aria-label="Abrir menú"
+                        @click="menuOpen = !menuOpen">
+                    <svg x-show="!menuOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg x-show="menuOpen" x-cloak xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
         </div>
+
+        {{-- Menú desplegable (mobile / tablet) --}}
+        <nav x-show="menuOpen" x-cloak x-transition.opacity
+             @click.outside="menuOpen = false"
+             class="lg:hidden border-t border-borde bg-negro">
+            <div class="max-w-6xl mx-auto px-4 py-2 flex flex-col">
+                @foreach($navItems as $item)
+                    <a href="{{ $item['href'] }}"
+                       @click="menuOpen = false"
+                       class="px-3 py-3 rounded-lg text-gray-200 font-medium hover:text-white hover:bg-card transition border-b border-borde/50 last:border-0">
+                        {{ $item['label'] }}
+                    </a>
+                @endforeach
+            </div>
+        </nav>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-10 md:space-y-14">
@@ -106,6 +152,7 @@
     <script>
         function dashboard() {
             return {
+                menuOpen: false,
                 hayEnVivo: {{ $enVivo->isNotEmpty() ? 'true' : 'false' }},
                 cantidadEnVivo: {{ $enVivo->count() }},
                 haceSegundos: 0,

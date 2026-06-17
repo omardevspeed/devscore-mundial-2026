@@ -3,7 +3,7 @@
 @section('content')
 
     {{-- 2. STATS GLOBALES --}}
-    <section>
+    <section id="estadisticas" class="scroll-mt-24">
         <h2 class="font-display font-bold text-white text-xl md:text-2xl mb-4">
             📊 Estadísticas del <span class="text-azul">algoritmo</span>
         </h2>
@@ -37,7 +37,7 @@
 
     {{-- 3. EN VIVO AHORA --}}
     @if($enVivo->isNotEmpty())
-        <section>
+        <section id="en-vivo" class="scroll-mt-24">
             <h2 class="font-display font-bold text-white text-xl md:text-2xl mb-4 flex items-center gap-2">
                 <span class="animate-pulse bg-speed text-white text-xs font-bold px-2 py-1 rounded uppercase">● En vivo</span>
                 Ahora mismo
@@ -72,7 +72,7 @@
     @endif
 
     {{-- 4. PRÓXIMOS PARTIDOS --}}
-    <section>
+    <section id="proximos" class="scroll-mt-24">
         <h2 class="font-display font-bold text-white text-xl md:text-2xl mb-4">
             ⏱ Próximos <span class="text-azul">partidos</span>
         </h2>
@@ -115,7 +115,7 @@
 
     {{-- 5. PARTIDOS TERMINADOS --}}
     @if($terminados->isNotEmpty())
-        <section>
+        <section id="terminados" class="scroll-mt-24">
             <h2 class="font-display font-bold text-white text-xl md:text-2xl mb-4">
                 🏁 Partidos <span class="text-azul">terminados</span>
             </h2>
@@ -150,7 +150,7 @@
 
     {{-- 6. TABLA POR GRUPOS --}}
     @if(!empty($grupos))
-        <section>
+        <section id="grupos" class="scroll-mt-24">
             <h2 class="font-display font-bold text-white text-xl md:text-2xl mb-4">
                 📋 Tabla por <span class="text-azul">grupos</span>
             </h2>
