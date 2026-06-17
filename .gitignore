@@ -13,6 +13,3 @@ app/storage/logs/*.log
 **/.DS_Store
 .idea/
 .vscode/
-
-# Prompt de trabajo (no forma parte de la app)
-promptMaestrio.md
